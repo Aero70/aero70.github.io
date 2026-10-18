@@ -85,7 +85,7 @@ export const PageLayout:React.FC<React.PropsWithChildren> = ({children}) =>{
             >
               <div style={{ viewTransitionName: "header-pattern" }}>
                   <header 
-                    className="max-w-4xl mx-auto w-full flex items-center  px-6 lg:px-16 mt-(--margin-top) gap-8 h-16 relative"
+                    className="max-w-4xl mx-auto w-full flex items-center px-6 lg:px-16 mt-(--margin-top) gap-8 h-16 relative"
                   >
                     <StripedCubeLogo style={{ viewTransitionName: "header-logo" }} className="sm:w-(--logo-width) w-[60px] shrink-0 touch-none" onMouseDown={() => headerRef.current?.focus()} />
                     

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { createMeta } from "../../utils/Meta";
 import { GetGameData } from "../../data/game/getGame";
-import { Link } from 'react-router';
+import { Link, useParams } from "react-router";
+import { H1 } from "../../components/Typography";
 
-import TextSVG from "../../components/svg/TextSvg"
+import TextSVG from "../../components/Text/TextSvg"
 import PhoneMockup from "../../components/mockup/PhoneMockup/PhoneMockup"
-import RightIcon from "../../components/icon/right"
+import BrowserMockup from "../../components/mockup/BrowserMockup/BrowserMockup"
+import SkipIcon from "../../components/icon/top_right"
 
 
 export const meta = () => {
@@ -19,65 +21,114 @@ export const meta = () => {
 
 export default function Games() {
   const [isMockupExpanded, setIsMockupExpanded] = useState(false);
-  const gameUrl = GetGameData.url.find(({ name }) => name === "gameUrl")?.src ?? "";
-  const previewSrc = GetGameData.url.find(({ name }) => name === "previewSrc")?.src ?? "";
+  const { game } = useParams();
+
+  const currentGame = game ? GetGameData.findIndex((item) => item.title.toLowerCase() === game) : 0;
+  const gameData = GetGameData[currentGame];
+
+  if (!gameData) {
+    return <p>Game not found.</p>;
+  }
+
+  const gameUrl = gameData.url['gameUrl'];
+  const previewSrc = gameData.url['previewSrc'];
 
   return (
     <>
-      <h1 className={`text-[1.6rem] text-(--palette-main-color) leading-1`}>
+      <h1 className={`text-[1.6rem] text-(--palette-main-color) leading-2`}>
         <span
           style={{ viewTransitionName: `hero-title` }}
           className="[view-transition-class:herotitle]"
         >Games</span>
       </h1>
-      <span className="text-[1rem] w-64 leading-5 lg:leading-6 -mt-2 text-neutral-400 tracking-widest dark:text-neutral-500">
-        Experiments that can be touched, turned, and play.
+      <span className="text-[1rem] text-neutral-400 tracking-widest dark:text-neutral-500 -mt-2">
+        Start the game with a small experiment.
       </span>
       
-      <section className="relative isolate w-full mt-6">
-        <TextSVG text="PLAY" position={{x:210,y:230}} className="stroke-4 lg:stroke-1 mt-6 stroke-[#000000]/20 dark:stroke-[#fff]/15" />
-        <TextSVG text="HERE" position={{x:215,y:230}} className="stroke-4 lg:stroke-1 lg:hidden mt-38 stroke-[#000000]/20 dark:stroke-[#fff]/15" />
-        <div 
-          style={{ viewTransitionName: `hero-title-Games` }} 
-          className={['flex flex-col mt-82 lg:mt-48 ','[view-transition-class:herotitle]'].join(' ')}
+      <section className="relative isolate w-full mt-4">
+        <TextSVG text="PLAY" position={{x:205,y:230}} className="stroke-4 lg:stroke-2 stroke-[#000000]/5 dark:stroke-[#fff]/15" />
+        <TextSVG text="HERE" position={{x:215,y:230}} className="stroke-4 lg:stroke-2 lg:hidden mt-32 stroke-[#000000]/5 dark:stroke-[#fff]/15" />
+        
+        <div style={{ viewTransitionName: `Games-note-${currentGame}` }} 
+          className={['flex flex-col mt-78 lg:mt-38 gap-4','[view-transition-class:herotitle]'].join(' ')}
         >
-          <h1 className={`text-[1rem] text-(--palette-main-color) leading-2`}>
-            <span>{GetGameData.tags.join(" - ")}</span>
-          </h1>
-          <span className="text-[2.8rem] font-bold leading-16" >
-              {GetGameData.title}
+          <span className={`text-[1rem] text-(--palette-main-color) leading-2`}>
+            <span>{gameData.tags.join(" · ")}</span>
           </span>
-          <span className="text-[1rem] w-full lg:w-[32rem] text-neutral-400 dark:text-(--palette-text-light-black)/50 leading-5 lg:leading-6">
-            {GetGameData.description}
+          <H1 id={gameData.title} className="text-[3.4rem] font-bold leading-12" >
+              {gameData.title}
+          </H1>
+          <span className="text-[1rem] w-full lg:w-[31rem] text-neutral-400 dark:text-(--palette-text-light-black)/50 leading-5 lg:leading-6">
+            {gameData.description}
           </span> 
 
-          <div className="flex gap-12 ">
+          <div className="flex gap-12">
             <Link 
               to={gameUrl} 
               target="_blank"
-              className=" mt-5 w-fit  cursor-pointer "
+              className=" mt-4 w-fit cursor-pointer flex "
             >
-              <span className="flex items-center text-black dark:text-(--palette-main-color) border-b-2 border-black dark:border-(--palette-main-color)">
-                OPEN GAME!
-                <RightIcon className="w-3 ml-2 fill-black dark:fill-(--palette-main-color)"></RightIcon>
-              </span>
-              
+              OPEN GAME
+              <SkipIcon className="fill-(--palette-main-color)"></SkipIcon>
             </Link>
+
           </div>
         </div>
 
-        <div className="absolute right-1/2 translate-x-1/2 lg:translate-none -top-30 lg:-right-42 lg:-top-32 scale-60 lg:scale-100">
-          <PhoneMockup isExpanded={isMockupExpanded} setIsExpanded={setIsMockupExpanded} screenSrc={gameUrl} previewSrc={previewSrc} />
+        <div style={{ viewTransitionName: `Games-note-${currentGame}-Mockup` }} 
+          className={['absolute w-full right-1/2 translate-x-1/2 top-6 ',
+          '[view-transition-class:hero-area]'].join(" ")}>
+          {
+            gameData.container === "phone" && 
+            <div className="absolute right-1/2 translate-x-1/2 -top-40 scale-60 lg:scale-100 lg:-top-36 lg:right-16">
+              <PhoneMockup 
+                isExpanded={isMockupExpanded} 
+                setIsExpanded={setIsMockupExpanded} 
+                screenSrc={gameUrl} 
+                preview={previewSrc} 
+              />
+            </div>
+          }
+
+          {
+            gameData.container === "browser" && 
+            <div className="relative w-full lg:-right-78 lg:-top-32 flex justify-end">
+              <BrowserMockup 
+                screenSrc={gameUrl} 
+                preview={previewSrc} 
+              />
+            </div>
+          }
         </div>
-
-        <div className="hidden sm:flex justify-center items-center absolute mt-2 lg:mt-25 w-full sm:border-t border-t-black/10 pt-6 ">
-          <div className="hidden sm:block absolute w-3 h-3 bg-(--palette-main-color) top-0 -translate-y-1/2 rounded-full border-2 border-black/10"></div>
-
-          <div className="flex flex-col items-center text-(--palette-main-color)">
-            <span className="leading-4 sm:leading-8 font-bold text-[1rem] lg:text-[1.5rem]">{GetGameData.title}</span>
-            <span className="text-[.9rem] lg:text-[1rem]">{GetGameData.platform}</span>
+        
+        {/* 选择 */}
+        <div className="sm:flex flex-col justify-center absolute w-full mt-6 lg:mt-9 border-t border-black/10 text-black/50 dark:text-gray-500 pb-14">
+          <div className="w-full leading-12 lg:leading-16">
+            <span className="tracking-[.2rem]">{`0${currentGame + 1}/0${GetGameData.length}`}</span>
           </div>
 
+          <div className="grid grid-cols-2">
+            {
+              GetGameData && GetGameData.map((item,index) => 
+              {
+                const game = item.title.toLowerCase();
+                return (
+                  <div className="flex gap-2 lg:gap-4 w-full ">
+                    <div className="flex flex-col items-center tracking-[.15rem] text-black/50 dark:text-gray-500">
+                      <span>0{index + 1}</span>
+                      <span className="w-full h-px bg-black/50 dark:bg-gray-500"></span>
+                    </div>
+                    <div className="flex flex-col">
+                      <Link to={`/games/${game}`} className="text-[1.2rem] lg:text-[1.5rem] leading-7" viewTransition >
+                        {item.title}
+                      </Link>
+                      <span className="text-[.8rem]">{item.note} - {item.platform}</span>
+                    </div>
+                  </div>
+                )
+              })
+            }
+          </div>
         </div>
       </section>
     </>

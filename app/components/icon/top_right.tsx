@@ -1,0 +1,7 @@
+export default function right (props : {className:string}) {
+    return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" {...props}>
+        <path d="M17 16V7H8v2h5.59l-6.3 6.29 1.42 1.42 6.29-6.3V16z"></path>
+    </svg>
+    )
+}

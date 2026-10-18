@@ -134,6 +134,18 @@ body a:hover {
     transform: translateY(-13px);
   }
 }
+@keyframes slide-view-to-right {
+  to {
+    transform: translateX(40px);
+  }
+}
+@keyframes slide-view-to-left {
+  to {
+    transform: translateX(-13px);
+  }
+}
+
+
 ::view-transition-old(content-view) {
   animation: 50ms ease-out both fade-out;
 }
@@ -152,9 +164,19 @@ body a:hover {
     400ms cubic-bezier(0.02, 0.02, 0.24, 1) 40ms both slide-title-from-bottom;
 }
 
-::view-transition-old(.herotitle) {
+::view-transition-old(.herotitle),
+::view-transition-new(.herotitle) {
     height: 100%;
 }
-::view-transition-new(.herotitle) {
+
+::view-transition-old(.hero-area):only-child{
+  animation: 400ms ease-in-out 40ms both fade-out,
+    400ms cubic-bezier(0.4, 0, 0.2, 1) 40ms both slide-view-to-right;
+}
+::view-transition-new(.hero-area):only-child{
+  animation: 400ms ease-in-out 40ms both fade-in;
+}
+::view-transition-old(.hero-area),
+::view-transition-new(.hero-area) {
     height: 100%;
 }
