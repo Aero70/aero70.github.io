@@ -21,7 +21,7 @@ export default function BrowserMockup ({
     preview:string
 }) {
     return (
-        <div className="px-1 max-w-xl w-full flex flex-col border border-gray-300 bg-(--palette-bg-light-black)/80 rounded-xl">
+        <div className="px-1 max-w-xl w-full flex flex-col border border-gray-300 bg-(--palette-bg-light-black)/80 dark:bg-(--palette-bg-dark-black)/80 rounded-xl">
             <div className="p-2 grid grid-cols-3 pointer-events-none">
                 <Ornament />
                 <input className="text-[.7rem] text-black/400 w-full" name="Website" type="url" value="aero70.github.io/Heroes3_Web/"  />

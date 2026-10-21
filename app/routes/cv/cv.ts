@@ -10,7 +10,7 @@ export const paddedText = ([text]: TemplateStringsArray) =>
 export const CV_DATA = {
   work: [
     {
-      date: { from: { month: 7, year: 2025 }, to: { month: 6, year: 2026 } },
+      date: { from: { month: 7, year: 2025 }, to: { month: 8, year: 2026 } },
       title: "森尔商贸",
       place: "广州",
       subtitle: "平面设计",

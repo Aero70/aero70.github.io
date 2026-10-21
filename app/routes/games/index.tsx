@@ -102,7 +102,7 @@ export default function Games() {
         </div>
         
         {/* 选择 */}
-        <div className="sm:flex flex-col justify-center absolute w-full mt-6 lg:mt-9 border-t border-black/10 text-black/50 dark:text-gray-500 pb-14">
+        <div className="sm:flex flex-col justify-center w-full mt-6 lg:mt-9 border-t border-black/10 text-black/50 dark:text-gray-500 pb-6">
           <div className="w-full leading-12 lg:leading-16">
             <span className="tracking-[.2rem]">{`0${currentGame + 1}/0${GetGameData.length}`}</span>
           </div>
